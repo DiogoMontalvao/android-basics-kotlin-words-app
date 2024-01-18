@@ -16,6 +16,8 @@
 package com.example.wordsapp
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -31,13 +33,13 @@ import androidx.recyclerview.widget.RecyclerView
 class WordAdapter(private val letterId: String, context: Context) :
     RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
 
-    private val filteredWords: List<String>
+    private val filteredWordsList: List<String>
 
     init {
         // Retrieve the list of words from res/values/arrays.xml
         val words = context.resources.getStringArray(R.array.words).toList()
 
-        filteredWords = words
+        filteredWordsList = words
             // Returns items in a collection if the conditional clause is true,
             // in this case if an item starts with the given letter,
             // ignoring UPPERCASE or lowercase.
@@ -51,10 +53,8 @@ class WordAdapter(private val letterId: String, context: Context) :
     }
 
     class WordViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val button = view.findViewById<Button>(R.id.button_item)
+        val buttonLetter = view.findViewById<Button>(R.id.button_item)
     }
-
-    override fun getItemCount(): Int = filteredWords.size
 
     /**
      * Creates new views with R.layout.item_view as its template
@@ -75,14 +75,22 @@ class WordAdapter(private val letterId: String, context: Context) :
      */
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
 
-        val item = filteredWords[position]
+        val word = filteredWordsList[position]
         // Needed to call startActivity
         val context = holder.view.context
 
         // Set the text of the WordViewHolder
-        holder.button.text = item
+        holder.buttonLetter.text = word
+        holder.buttonLetter.setOnClickListener {
+            val queryUrl: Uri = Uri.parse("${DetailActivity.SEARCH_PREFIX}$word")
 
+            val intent = Intent(Intent.ACTION_VIEW, queryUrl)
+            context.startActivity(intent)
+        }
     }
+
+    override fun getItemCount(): Int = filteredWordsList.size
+
     // Setup custom accessibility delegate to set the text read with
     // an accessibility service
     companion object Accessibility : View.AccessibilityDelegate() {

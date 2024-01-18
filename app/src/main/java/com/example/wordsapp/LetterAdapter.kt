@@ -15,6 +15,7 @@
  */
 package com.example.wordsapp
 
+import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -31,17 +32,13 @@ class LetterAdapter :
     RecyclerView.Adapter<LetterAdapter.LetterViewHolder>() {
 
     // Generates a [CharRange] from 'A' to 'Z' and converts it to a list
-    private val list = ('A').rangeTo('Z').toList()
+    private val letterList = ('A'..'Z').toList()
 
     /**
      * Provides a reference for the views needed to display items in your list.
      */
     class LetterViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val button = view.findViewById<Button>(R.id.button_item)
-    }
-
-    override fun getItemCount(): Int {
-        return list.size
+        val buttonLetter = view.findViewById<Button>(R.id.button_item)
     }
 
     /**
@@ -60,9 +57,20 @@ class LetterAdapter :
      * Replaces the content of an existing view with new data
      */
     override fun onBindViewHolder(holder: LetterViewHolder, position: Int) {
-        val item = list.get(position)
-        holder.button.text = item.toString()
+        val letter = letterList[position]
+
+        holder.buttonLetter.text = letter.toString()
+        holder.buttonLetter.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, DetailActivity::class.java)
+
+            intent.putExtra(DetailActivity.LETRA, holder.buttonLetter.text.toString())
+
+            context.startActivity(intent)
+        }
     }
+
+    override fun getItemCount(): Int = letterList.size
 
     // Setup custom accessibility delegate to set the text read with
     // an accessibility service
