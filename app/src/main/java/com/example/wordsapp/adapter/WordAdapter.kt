@@ -29,9 +29,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wordsapp.DetailActivity
 import com.example.wordsapp.R
 
-/**
- * Adapter for the [RecyclerView] in [DetailActivity].
- */
 class WordAdapter(private val letterId: String, context: Context) :
     RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
 
@@ -43,7 +40,6 @@ class WordAdapter(private val letterId: String, context: Context) :
         filteredWordsList = words
             .filter { it.startsWith(letterId, ignoreCase = true) }
             .shuffled()
-            .take(5)
             .sorted()
     }
 
@@ -51,9 +47,6 @@ class WordAdapter(private val letterId: String, context: Context) :
         val buttonLetter = view.findViewById<Button>(R.id.button_item)
     }
 
-    /**
-     * Creates new views with R.layout.item_view as its template
-     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
         val layout = LayoutInflater
             .from(parent.context)
@@ -64,9 +57,6 @@ class WordAdapter(private val letterId: String, context: Context) :
         return WordViewHolder(layout)
     }
 
-    /**
-     * Replaces the content of an existing view with new data
-     */
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
 
         val word = filteredWordsList[position]

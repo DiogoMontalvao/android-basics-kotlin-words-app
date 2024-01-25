@@ -27,24 +27,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wordsapp.DetailActivity
 import com.example.wordsapp.R
 
-/**
- * Adapter for the [RecyclerView] in [MainActivity].
- */
 class LetterAdapter :
     RecyclerView.Adapter<LetterAdapter.LetterViewHolder>() {
 
     private val letterList = ('A'..'Z').toList()
 
-    /**
-     * Provides a reference for the views needed to display items in your list.
-     */
     class LetterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val buttonLetter = view.findViewById<Button>(R.id.button_item)
     }
 
-    /**
-     * Creates new views with R.layout.item_view as its template
-     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterViewHolder {
         val layout = LayoutInflater
                 .from(parent.context)
@@ -54,9 +45,6 @@ class LetterAdapter :
         return LetterViewHolder(layout)
     }
 
-    /**
-     * Replaces the content of an existing view with new data
-     */
     override fun onBindViewHolder(holder: LetterViewHolder, position: Int) {
         val letter = letterList[position]
 
