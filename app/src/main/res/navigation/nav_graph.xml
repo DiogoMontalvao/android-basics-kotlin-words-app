@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/letterListFragment"
-        android:name="com.example.wordsapp.LetterListFragment"
+        android:name="com.example.wordsapp.fragment.LetterListFragment"
         android:label="@string/app_name">
         <action
             android:id="@+id/action_letterListFragment_to_wordListFragment"
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/wordListFragment"
-        android:name="com.example.wordsapp.WordListFragment"
+        android:name="com.example.wordsapp.fragment.WordListFragment"
         android:label="@string/word_list_fragment_label"
         tools:layout="@layout/fragment_word_list">
         <argument
