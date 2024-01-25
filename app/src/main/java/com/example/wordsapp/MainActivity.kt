@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordsapp.adapter.LetterAdapter
 import com.example.wordsapp.databinding.ActivityMainBinding
 
 /**

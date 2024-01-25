@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.wordsapp
+package com.example.wordsapp.adapter
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -24,53 +26,62 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordsapp.DetailActivity
+import com.example.wordsapp.R
 
 /**
- * Adapter for the [RecyclerView] in [MainActivity].
+ * Adapter for the [RecyclerView] in [DetailActivity].
  */
-class LetterAdapter :
-    RecyclerView.Adapter<LetterAdapter.LetterViewHolder>() {
+class WordAdapter(private val letterId: String, context: Context) :
+    RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
 
-    // Generates a [CharRange] from 'A' to 'Z' and converts it to a list
-    private val letterList = ('A'..'Z').toList()
+    private val filteredWordsList: List<String>
 
-    /**
-     * Provides a reference for the views needed to display items in your list.
-     */
-    class LetterViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    init {
+        val words = context.resources.getStringArray(R.array.words).toList()
+
+        filteredWordsList = words
+            .filter { it.startsWith(letterId, ignoreCase = true) }
+            .shuffled()
+            .take(5)
+            .sorted()
+    }
+
+    class WordViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val buttonLetter = view.findViewById<Button>(R.id.button_item)
     }
 
     /**
      * Creates new views with R.layout.item_view as its template
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
         val layout = LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.item_view, parent, false)
-        // Setup custom accessibility delegate to set the text read
+            .from(parent.context)
+            .inflate(R.layout.item_view, parent, false)
+
         layout.accessibilityDelegate = Accessibility
-        return LetterViewHolder(layout)
+
+        return WordViewHolder(layout)
     }
 
     /**
      * Replaces the content of an existing view with new data
      */
-    override fun onBindViewHolder(holder: LetterViewHolder, position: Int) {
-        val letter = letterList[position]
+    override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
 
-        holder.buttonLetter.text = letter.toString()
+        val word = filteredWordsList[position]
+        val context = holder.view.context
+
+        holder.buttonLetter.text = word
         holder.buttonLetter.setOnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context, DetailActivity::class.java)
+            val queryUrl: Uri = Uri.parse("${DetailActivity.SEARCH_PREFIX}$word")
 
-            intent.putExtra(DetailActivity.LETRA, holder.buttonLetter.text.toString())
-
+            val intent = Intent(Intent.ACTION_VIEW, queryUrl)
             context.startActivity(intent)
         }
     }
 
-    override fun getItemCount(): Int = letterList.size
+    override fun getItemCount(): Int = filteredWordsList.size
 
     // Setup custom accessibility delegate to set the text read with
     // an accessibility service
@@ -85,7 +96,7 @@ class LetterAdapter :
             // accessibility service announces "double tap to activate".
             // If a custom string is provided,
             // it announces "double tap to <custom string>".
-            val customString = host.context?.getString(R.string.look_up_words)
+            val customString = host.context?.getString(R.string.look_up_word)
             val customClick =
                 AccessibilityNodeInfo.AccessibilityAction(
                     AccessibilityNodeInfo.ACTION_CLICK,
