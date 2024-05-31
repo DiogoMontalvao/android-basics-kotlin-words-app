@@ -33,7 +33,7 @@ class LetterAdapter :
     private val letterList = ('A'..'Z').toList()
 
     class LetterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val buttonLetter = view.findViewById<Button>(R.id.button_item)
+        val buttonLetter: Button = view.findViewById<Button>(R.id.button_item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LetterViewHolder {

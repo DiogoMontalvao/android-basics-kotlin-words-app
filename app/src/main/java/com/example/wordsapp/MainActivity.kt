@@ -27,18 +27,17 @@ import com.example.wordsapp.adapter.LetterAdapter
 import com.example.wordsapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding: ActivityMainBinding
     private var isLinearLayoutManager = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        recyclerView = binding.recyclerView
 
         chooseLayout()
-        recyclerView.adapter = LetterAdapter()
+        binding.recyclerView.adapter = LetterAdapter()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -64,9 +63,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun chooseLayout() {
         if (isLinearLayoutManager) {
-            recyclerView.layoutManager = LinearLayoutManager(this)
+            binding.recyclerView.layoutManager = LinearLayoutManager(this)
         } else {
-            recyclerView.layoutManager = GridLayoutManager(this, 3)
+            binding.recyclerView.layoutManager = GridLayoutManager(this, 3)
         }
     }
 
